@@ -15,58 +15,57 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
             title:
                 Text('Profile', style: TextStyle(fontWeight: FontWeight.bold))),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.add, color: Colors.white),
-          backgroundColor: Colors.black,
-          shape: CircleBorder(),
-        ),
-        bottomNavigationBar: BottomAppBar(
-            color: Colors.white,
-            shape: CircularNotchedRectangle(),
-            notchMargin: 8.0, // Adjust the margin of the notch
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.calendar_month),
-                  onPressed: () {
-                    // Handle tapping on the first tab
-                    _onTabTapped(0);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.bar_chart),
-                  onPressed: () {
-                    // Handle tapping on the second tab
-                    _onTabTapped(1);
-                  },
-                ),
-                SizedBox(), // This SizedBox is used to create space for the FAB
-                IconButton(
-                  icon: Icon(Icons.wallet),
-                  onPressed: () {
-                    // Handle tapping on the third tab
-                    _onTabTapped(2);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.person),
-                  color: Colors.black,
-                  onPressed: () {
-                    // Handle tapping on the fourth tab
-                    _onTabTapped(3);
-                  },
-                ),
-              ],
-            )));
-  }
+      
 
-  void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+        body: Column(
+          children: [
+
+Container(
+  padding: EdgeInsets.fromLTRB(80, 20, 0, 0),
+  child:   Row(children: [
+           Text('Welcome',style: TextStyle(fontSize: 20)),
+           const SizedBox(width: 10),
+            Text('Surya Vamsi',style: TextStyle(fontSize: 20))
+            ],),
+)
+          
+
+        ]),
+        bottomNavigationBar: BottomAppBar(
+          color: Colors.white,
+          notchMargin: 8.0, // Adjust the margin of the notch
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.calendar_month),
+  
+                onPressed: () {
+                  // Handle tapping on the first tab
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.bar_chart),
+                onPressed: () {
+                  // Handle tapping on the second tab
+                },
+              ),
+              SizedBox(), // This SizedBox is used to create space for the FAB
+              IconButton(
+                icon: Icon(Icons.person),
+                color: Colors.black,
+                onPressed: () {
+                  // Handle tapping on the fourth tab
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+              ),
+            ],
+          ),
+        )  
+            );
   }
 }

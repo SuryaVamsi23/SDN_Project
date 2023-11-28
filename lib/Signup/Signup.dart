@@ -1,18 +1,15 @@
-import 'package:expensetracker/Signup/Signup.dart';
+import 'package:expensetracker/Loginpage/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../HomeScreen/HomeScreen.dart';
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<Signup> createState() => _SignupState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupState extends State<Signup> {
   @override
-  TextEditingController emailcontroller = TextEditingController();
-  TextEditingController passwordcontroller = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -22,8 +19,18 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Login',
+            Text('Sign up',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Name',
+                ),
+                //controller: emailcontroller,
+              ),
+            ),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
@@ -54,13 +61,13 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      const Color.fromARGB(255, 167, 210, 245), // Set the background color to black
+                   const Color.fromARGB(255, 167, 210, 245),// Set the background color to black
                   foregroundColor:
                       Colors.black, // Set the text and icon color to white
                   minimumSize:
                       Size(200, 48), // Set the minimum size of the button
                 ),
-                child: Text('Login')
+                child: Text('Sign Up')
               ),
             ),
             const SizedBox(height: 10),
@@ -68,45 +75,22 @@ class _LoginPageState extends State<LoginPage> {
               padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
               child: Row(
                 children: [
-                  Text("Don't have an account?"),
+                  Text("Have an account?"),
                   TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Signup()),
-                        );
+                                          Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
                       },
                       child: Text(
-                        'Sign up',
+                        'Sign In',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ))
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 50, 0),
-              child: Column(children: [
-                Text('or'),
-                const SizedBox(height: 10),
-                Text('Connect using'),
-                const SizedBox(height: 10),
-              ]),
-            ),
-            Container(
-                padding: EdgeInsets.fromLTRB(110, 0, 0, 0),
-                child: Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: Image.asset("assets/google.png",
-                            height: 60, width: 60)),
-                    IconButton(
-                        onPressed: () {},
-                        icon: Image.asset("assets/facebook.png",
-                            height: 40, width: 40))
-                  ],
-                ))
           ],
-        ));
+        ));;
   }
 }

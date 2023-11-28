@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewTransactions()),
+                  MaterialPageRoute(builder: (context) => ViewTransactions(selecteddate: _selectedDay)),
                 );
               },
             ))

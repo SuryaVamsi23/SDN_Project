@@ -1,6 +1,7 @@
 import 'package:expensetracker/Loginpage/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../HomeScreen/HomeScreen.dart';
+import '../Services/Services.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -11,6 +12,10 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   @override
+  Services services = new Services();
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -22,39 +27,42 @@ class _SignupState extends State<Signup> {
           children: [
             Text('Sign up',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Name',
                 ),
-                //controller: emailcontroller,
+                controller: namecontroller,
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Email ID',
                 ),
-                //controller: emailcontroller,
+                controller: emailcontroller,
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), hintText: 'Password'),
                 obscureText: true,
-                //controller: passwordcontroller,
+                controller: passwordcontroller,
               ),
             ),
             Container(
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
+                    print(namecontroller.text);
+                    services.SignUp(namecontroller.text, emailcontroller.text,
+                        passwordcontroller.text);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

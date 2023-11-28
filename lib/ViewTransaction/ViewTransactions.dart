@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ViewTransactions extends StatefulWidget {
-  const ViewTransactions({super.key});
+  final DateTime selecteddate;
+  const ViewTransactions({super.key, required this.selecteddate});
 
   @override
   State<ViewTransactions> createState() => _ViewTransactionsState();

@@ -1,6 +1,7 @@
 import 'package:expensetracker/Loginpage/LoginPage.dart';
 import 'package:flutter/material.dart';
 import '../HomeScreen/HomeScreen.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -53,22 +54,21 @@ class _SignupState extends State<Signup> {
             Container(
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                   const Color.fromARGB(255, 167, 210, 245),// Set the background color to black
-                  foregroundColor:
-                      Colors.black, // Set the text and icon color to white
-                  minimumSize:
-                      Size(200, 48), // Set the minimum size of the button
-                ),
-                child: Text('Sign Up')
-              ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 167, 210,
+                        245), // Set the background color to black
+                    foregroundColor:
+                        Colors.black, // Set the text and icon color to white
+                    minimumSize:
+                        Size(200, 48), // Set the minimum size of the button
+                  ),
+                  child: Text('Sign Up')),
             ),
             const SizedBox(height: 10),
             Container(
@@ -78,10 +78,10 @@ class _SignupState extends State<Signup> {
                   Text("Have an account?"),
                   TextButton(
                       onPressed: () {
-                                          Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
                       },
                       child: Text(
                         'Sign In',
@@ -91,6 +91,7 @@ class _SignupState extends State<Signup> {
               ),
             ),
           ],
-        ));;
+        ));
+    ;
   }
 }

@@ -76,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
               IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
-                  // Handle tapping on the fourth tab
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ProfilePage()),

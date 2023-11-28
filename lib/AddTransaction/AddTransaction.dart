@@ -20,7 +20,7 @@ class _AddTransactionState extends State<AddTransaction> {
       body: ListView(
         children: [
           Container(
-            color: Color.fromARGB(255, 255, 249, 249),
+            color: Color.fromARGB(255, 255, 255, 255),
             padding: EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +84,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                     Image.asset("assets/online-shopping.png"),
+                                    Image.asset("assets/online-shopping.png"),
                                     Text(
                                       'Shopping',
                                       style: TextStyle(
@@ -112,7 +112,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                     Image.asset("assets/house.png"),
+                                    Image.asset("assets/house.png"),
                                     Text(
                                       'Housing',
                                       style: TextStyle(
@@ -140,7 +140,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                     Image.asset("assets/loan.png"),
+                                    Image.asset("assets/loan.png"),
                                     Text(
                                       'Debt',
                                       style: TextStyle(
@@ -168,7 +168,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                     Image.asset("assets/account.png"),
+                                    Image.asset("assets/account.png"),
                                     Text(
                                       'Personal',
                                       style: TextStyle(

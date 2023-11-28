@@ -46,22 +46,21 @@ class _LoginPageState extends State<LoginPage> {
             Container(
               height: 50,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color.fromARGB(255, 167, 210, 245), // Set the background color to black
-                  foregroundColor:
-                      Colors.black, // Set the text and icon color to white
-                  minimumSize:
-                      Size(200, 48), // Set the minimum size of the button
-                ),
-                child: Text('Login')
-              ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 167, 210,
+                        245), // Set the background color to black
+                    foregroundColor:
+                        Colors.black, // Set the text and icon color to white
+                    minimumSize:
+                        Size(200, 48), // Set the minimum size of the button
+                  ),
+                  child: Text('Login')),
             ),
             const SizedBox(height: 10),
             Container(

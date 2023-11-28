@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'Loginpage/LoginPage.dart';
-import 'HomeScreen/HomeScreen.dart';
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -10,8 +12,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp( 
-      home: LoginPage()
-    );
+    return const MaterialApp(home: LoginPage());
   }
 }

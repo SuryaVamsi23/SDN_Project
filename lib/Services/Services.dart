@@ -20,6 +20,17 @@ class Services {
     return id;
   }
 
+  Future<String> SignIn(String email,String Password) async{
+    print("Signin with email password");
+    print(email);
+    print(Password);
+    UserCredential user = await _auth.signInWithEmailAndPassword(email: email, password: Password);
+    FirebaseUser = FirebaseAuth.instance.currentUser;
+    String id = FirebaseUser.uid;
+    print(id);
+    return id;
+  }
+
   Future<bool> AddTransaction(String type, String date, double amount,String id) async {
     var data = await usercollection.doc(id).get();
     print("In add transaction");
@@ -41,9 +52,12 @@ class Services {
     }
     else
     {
+      print("In else");
       var getdocid = data["transaction"][date];
-      var transactiondata = await transactioncollection.doc(getdocid).update({type: amount});
-
+      print(getdocid);
+      var transactiondata = await transactioncollection.doc(getdocid).get();
+      print(transactiondata[type]);
+      transactioncollection.doc(getdocid).update({type: transactiondata[type] + amount});
     }
     return true;
   }

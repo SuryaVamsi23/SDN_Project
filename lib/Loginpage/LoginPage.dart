@@ -1,7 +1,7 @@
 import 'package:expensetracker/Signup/Signup.dart';
 import 'package:flutter/material.dart';
 import '../HomeScreen/HomeScreen.dart';
-
+import '../Services/Services.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -13,6 +13,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  Services services = new Services();
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -24,29 +25,32 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             Text('Login',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Email ID',
                 ),
-                //controller: emailcontroller,
+                controller: emailcontroller,
               ),
             ),
-            const Padding(
+             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
                     border: OutlineInputBorder(), hintText: 'Password'),
                 obscureText: true,
-                //controller: passwordcontroller,
+                controller: passwordcontroller,
               ),
             ),
             Container(
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
+                    services.SignIn(emailcontroller.text,
+                        passwordcontroller.text).then((value) => services.AddTransaction('Shopping','12-12-2001',5000,value));
+
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

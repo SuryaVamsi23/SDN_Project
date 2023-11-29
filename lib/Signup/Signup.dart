@@ -61,13 +61,16 @@ class _SignupState extends State<Signup> {
               child: ElevatedButton(
                   onPressed: () {
                     services.SignUp(namecontroller.text, emailcontroller.text,
-                        passwordcontroller.text).then((value) => services.AddTransaction('Housing','12-12-2001',5000,value));
-
-                    
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    );
+                            passwordcontroller.text)
+                        .then((value) => {
+                              services.AddTransaction(
+                                  'Housing', '12-12-2001', 5000, value),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                              )
+                            });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 167, 210,

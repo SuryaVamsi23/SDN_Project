@@ -63,6 +63,8 @@ class _SignupState extends State<Signup> {
                     print(namecontroller.text);
                     services.SignUp(namecontroller.text, emailcontroller.text,
                         passwordcontroller.text);
+                      
+                    services.AddTransaction('debt', DateTime.now(), 5000);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

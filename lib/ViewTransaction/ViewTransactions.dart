@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../Services/Services.dart';
 
 class ViewTransactions extends StatefulWidget {
-  final DateTime selecteddate;
+  final String selecteddate;
   const ViewTransactions({super.key, required this.selecteddate});
 
   @override
@@ -10,6 +12,33 @@ class ViewTransactions extends StatefulWidget {
 
 class _ViewTransactionsState extends State<ViewTransactions> {
   @override
+  Services services = new Services();
+  String total = '0';
+  String debt = '0';
+  String housing = '0';
+  String personal = '0';
+  String shopping = '0';
+  String travel = '0';
+  
+    void initState() {
+    super.initState();
+    // Fetch transactions when the widget is initialized
+    fetchTransactions();
+  }
+    Future<void> fetchTransactions() async {
+    // Use your Services class to get the transactions based on the selected date
+    DocumentSnapshot ans = await services.getTransaction(widget.selecteddate);
+    print("Intransaction");
+    print(ans["Total"]);
+    setState(() {
+      total = ans["Total"].toString();
+      debt = ans["Debt Payments"].toString();
+      housing = ans["Housing"].toString();
+      personal = ans["Personal expense"].toString();
+      travel = ans["Travel"].toString();
+      shopping = ans["Shopping"].toString();
+    });
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -22,14 +51,14 @@ class _ViewTransactionsState extends State<ViewTransactions> {
             Row( children: [
               Text("22 November",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
               Text("Total expense"),
-              Text("1000")
+              Text(total)
             ]),
             Row(children: [
                Image.asset("assets/airplane.png",height: 40,width: 40),
               const SizedBox(width: 20),
               Text('Travel', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 80),
-              Text('200', style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
+              Text(travel, style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
             ]),
             Divider(
               color: Colors.black,
@@ -40,7 +69,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
               const SizedBox(width: 20),
               Text('Shopping', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 34),
-              Text('200', style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
+              Text(shopping, style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
             ]),
             Divider(
               color: Colors.black,
@@ -54,7 +83,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
                     fontSize: 20,
                   )),
               const SizedBox(width: 50),
-              Text('200', style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
+              Text(housing, style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
             ]),
             Divider(
               color: Colors.black,
@@ -65,7 +94,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
               const SizedBox(width: 20),
               Text('Debt', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 100),
-              Text('200', style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
+              Text(debt, style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
             ]),
             Divider(
               color: Colors.black,
@@ -76,7 +105,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
               const SizedBox(width: 20),
               Text('Personal', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 50),
-              Text('200', style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
+              Text(personal, style: TextStyle(fontSize: 20, color: Colors.red,fontWeight: FontWeight.bold))
             ]),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'package:expensetracker/HomeScreen/HomeScreen.dart';
 import 'package:flutter/material.dart';
-
+import '../Services/Services.dart';
 class AddTransaction extends StatefulWidget {
   const AddTransaction({super.key});
 
@@ -11,7 +11,33 @@ class AddTransaction extends StatefulWidget {
 class _AddTransactionState extends State<AddTransaction> {
   @override
   String selectedCat = '';
-  TextEditingController amount = new TextEditingController();
+  TextEditingController amountController = new TextEditingController();
+  String selectedDate = '';
+  Services services = new Services();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      String temp = "";
+      // temp = picked.day.toString() +
+      //     '-' +
+      //     picked.month.toString() +
+      //     '-' +
+      //     picked.year.toString();
+      setState(() {
+        selectedDate = '${picked.day}-${picked.month}-${picked.year}';
+      });
+    }
+
+    print("Selected date = ");
+    print(selectedDate);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -154,7 +180,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  selectedCat = ' ';
+                                  selectedCat = 'Personal expense';
                                 });
                               },
                               style: ElevatedButton.styleFrom(
@@ -196,16 +222,43 @@ class _AddTransactionState extends State<AddTransaction> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                   child: TextField(
-                    controller: amount,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Add amount',
                     ),
-                    //controller: emailcontroller,
+                    controller: amountController,
                   ),
                 ),
-                const SizedBox(height: 300),
+                const SizedBox(height: 20),
+                Text('Select Date',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
+                Container(
+                  height: 50,
+                  child: ElevatedButton(
+                      onPressed: () => _selectDate(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 167, 210,
+                            245), // Set the background color to black
+                        foregroundColor: Colors
+                            .black, // Set the text and icon color to white
+                        minimumSize:
+                            Size(200, 48), // Set the minimum size of the button
+                      ),
+                      child: Text('Select Date')),
+                ),
+                Text('Selected Date',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16)),
+                Text(selectedDate,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                const SizedBox(height: 20),
               ],
             ),
           ),
@@ -217,6 +270,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
+                      services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text));
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomeScreen()),

@@ -63,8 +63,6 @@ class _SignupState extends State<Signup> {
                     services.SignUp(namecontroller.text, emailcontroller.text,
                             passwordcontroller.text)
                         .then((value) => {
-                              services.AddTransaction(
-                                  'Housing', '12-12-2001', 5000, value),
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

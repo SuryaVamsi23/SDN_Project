@@ -2,6 +2,7 @@ import 'package:expensetracker/Signup/Signup.dart';
 import 'package:flutter/material.dart';
 import '../HomeScreen/HomeScreen.dart';
 import '../Services/Services.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -35,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: emailcontroller,
               ),
             ),
-             Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: TextField(
                 decoration: InputDecoration(
@@ -48,13 +49,13 @@ class _LoginPageState extends State<LoginPage> {
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
-                    services.SignIn(emailcontroller.text,
-                        passwordcontroller.text).then((value) => services.AddTransaction('Shopping','12-12-2001',5000,value));
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    );
+                    services.SignIn(
+                            emailcontroller.text, passwordcontroller.text)
+                        .then((value) => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen()),
+                            ));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 167, 210,

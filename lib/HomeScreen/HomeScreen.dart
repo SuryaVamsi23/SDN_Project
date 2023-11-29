@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-  int _currentIndex = 0;
+  String finalDate = '';
   DateTime _selectedDay = DateTime.now();
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   focusedDay = selectedDay;
                   _selectedDay = selectedDay;
+                  finalDate = '${_selectedDay.day}-${_selectedDay.month}-${_selectedDay.year}';
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewTransactions(selecteddate: _selectedDay)),
+                  MaterialPageRoute(builder: (context) => ViewTransactions(selecteddate: finalDate)),
                 );
               },
             ))

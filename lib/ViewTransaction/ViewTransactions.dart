@@ -45,14 +45,15 @@ class _ViewTransactionsState extends State<ViewTransactions> {
           title: Text('Transactions',
               style: TextStyle(fontWeight: FontWeight.bold))),
       body: Container(
-        padding: EdgeInsets.all(40),
+        padding: EdgeInsets.all(30),
         child: Column(
           children: [
-            Row( children: [
-              Text("22 November",style: TextStyle(fontSize: 10,fontWeight: FontWeight.bold),),
-              Text("Total expense"),
-              Text(total)
+            Column( children: [
+              Text(widget.selecteddate,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+              Row(children: [ const SizedBox(width: 60),Text("Total expense: ",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
+              Text(total,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.red))])
             ]),
+             const SizedBox(height: 20),
             Row(children: [
                Image.asset("assets/airplane.png",height: 40,width: 40),
               const SizedBox(width: 20),
@@ -62,7 +63,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
             ]),
             Divider(
               color: Colors.black,
-              thickness: 0.2,
+              thickness: 0.05,
             ),
             Row(children: [
                Image.asset("assets/online-shopping.png",height: 40,width: 40),
@@ -98,7 +99,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
             ]),
             Divider(
               color: Colors.black,
-              thickness: 0.2,
+              thickness: 0.05,
             ),
             Row(children: [
                Image.asset("assets/account.png",height: 40,width: 40),

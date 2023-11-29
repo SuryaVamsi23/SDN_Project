@@ -154,7 +154,7 @@ class _AddTransactionState extends State<AddTransaction> {
                             child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
-                                  selectedCat = 'Personal expense';
+                                  selectedCat = ' ';
                                 });
                               },
                               style: ElevatedButton.styleFrom(

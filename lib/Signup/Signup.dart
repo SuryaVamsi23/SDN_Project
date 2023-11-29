@@ -60,11 +60,10 @@ class _SignupState extends State<Signup> {
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
-                    print(namecontroller.text);
                     services.SignUp(namecontroller.text, emailcontroller.text,
-                        passwordcontroller.text);
-                      
-                    services.AddTransaction('debt', DateTime.now(), 5000);
+                        passwordcontroller.text).then((value) => services.AddTransaction('Housing','12-12-2001',5000,value));
+
+                    
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => HomeScreen()),

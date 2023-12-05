@@ -32,7 +32,7 @@ class _AddTransactionState extends State<AddTransaction> {
       //     picked.year.toString();
       setState(() {
         selectedDate = '${picked.day}-${picked.month}-${picked.year}';
-        selectedMonth = '${picked.month}';
+        selectedMonth = '${picked.year}-${picked.month}';
       });
     }
 

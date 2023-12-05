@@ -22,11 +22,9 @@ class _ViewTransactionsState extends State<ViewTransactions> {
   
     void initState() {
     super.initState();
-    // Fetch transactions when the widget is initialized
     fetchTransactions();
   }
     Future<void> fetchTransactions() async {
-    // Use your Services class to get the transactions based on the selected date
     DocumentSnapshot ans = await services.getTransaction(widget.selecteddate);
     print("Intransaction");
     print(ans["Total"]);

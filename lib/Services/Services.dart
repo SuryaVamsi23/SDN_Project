@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Services {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -53,6 +54,7 @@ class Services {
       newTransaction[type] = amount;
       newTransaction["Total"] = amount;
       print("Montly");
+      print(month);
       double full = 0;
       if (data["monthly"][month] == null) {
         full = amount;
@@ -119,5 +121,52 @@ class Services {
       return map;
     }
     return map;
+  }
+
+  Future<double> getMonthly() async{
+    String id = _auth.currentUser!.uid;
+    double ans = 0;
+    String month = '${DateTime.now().year}-${DateTime.now().month}';
+    var data = await usercollection.doc(id).get();
+    if(data['monthly'][month] == null)
+        ans = 0;
+
+    else
+      ans = data["monthly"][month];
+    return ans;
+  }
+
+  Future<String> get_name() async{
+    String id = _auth.currentUser!.uid;
+    var data = await usercollection.doc(id).get();
+    return(data["name"]);
+  }
+
+  Future<bool> oauth_google() async{
+    try{
+      await GoogleSignIn().signOut();
+      final GoogleSignInAccount? user = await GoogleSignIn(forceCodeForRefreshToken: true).signIn();
+      if(user == null)
+        return false;
+      final GoogleSignInAuthentication googleauth = await user.authentication;
+      final AuthCredential creds = await GoogleAuthProvider.credential(accessToken: googleauth.accessToken,idToken: googleauth.idToken);
+      UserCredential auth = await _auth.signInWithCredential(creds);
+      DocumentSnapshot userDoc = await usercollection.doc(auth.user?.uid).get();
+      String gmail = user!.email ?? "";
+      String username = user.displayName ?? "";
+      if (userDoc.exists) {
+        print('User Already Exist : Updating Only Gmail');
+        await usercollection.doc(auth.user?.uid).update({
+          'google': gmail,
+        });
+      } else {
+        await usercollection.doc(auth.user?.uid).set({"name": username, "transaction": {}, "monthly": {}});
+      }
+      return true;
+
+    }catch(e){
+      print(e);
+      return false;
+    }
   }
 }

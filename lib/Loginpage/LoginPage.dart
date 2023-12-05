@@ -51,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     services.SignIn(
                             emailcontroller.text, passwordcontroller.text)
-                        .then((value) => Navigator.push(
+                        .then((value) => Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => HomeScreen()),
@@ -101,7 +101,17 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                         bool flag = await services.oauth_google();
+                        if(flag)
+                        {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen())
+                            );
+                        }
+                        },
                         icon: Image.asset("assets/google.png",
                             height: 60, width: 60)),
                     IconButton(

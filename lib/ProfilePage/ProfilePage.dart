@@ -50,12 +50,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 },
               ),
-              IconButton(
-                icon: Icon(Icons.bar_chart),
-                onPressed: () {
-                  // Handle tapping on the second tab
-                },
-              ),
               // This SizedBox is used to create space for the FAB
               IconButton(
                 icon: Icon(Icons.person),

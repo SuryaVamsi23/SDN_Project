@@ -69,12 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               IconButton(
-                icon: Icon(Icons.bar_chart),
-                onPressed: () {
-                  // Handle tapping on the second tab
-                },
-              ),
-              IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
                   Navigator.push(

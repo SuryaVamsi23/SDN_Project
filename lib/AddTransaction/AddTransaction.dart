@@ -13,6 +13,7 @@ class _AddTransactionState extends State<AddTransaction> {
   String selectedCat = '';
   TextEditingController amountController = new TextEditingController();
   String selectedDate = '';
+  String selectedMonth = '';
   Services services = new Services();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -31,6 +32,7 @@ class _AddTransactionState extends State<AddTransaction> {
       //     picked.year.toString();
       setState(() {
         selectedDate = '${picked.day}-${picked.month}-${picked.year}';
+        selectedMonth = '${picked.month}';
       });
     }
 
@@ -270,7 +272,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text));
+                      services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text),selectedMonth);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomeScreen()),

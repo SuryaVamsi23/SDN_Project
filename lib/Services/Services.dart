@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,7 +16,9 @@ class Services {
     FirebaseUser = FirebaseAuth.instance.currentUser;
     String id = FirebaseUser.uid;
 
-    await usercollection.doc(id).set({"name": name, "transaction": {}});
+    await usercollection
+        .doc(id)
+        .set({"name": name, "transaction": {}, "monthly": {}});
     return id;
   }
 
@@ -33,7 +34,8 @@ class Services {
     return id;
   }
 
-  Future<bool> AddTransaction(String type, String date, double amount) async {
+  Future<bool> AddTransaction(
+      String type, String date, double amount, String month) async {
     String id = _auth.currentUser!.uid;
     var data = await usercollection.doc(id).get();
     print("In add transaction");
@@ -50,8 +52,26 @@ class Services {
       };
       newTransaction[type] = amount;
       newTransaction["Total"] = amount;
+      print("Montly");
+      double full = 0;
+      if (data["monthly"][month] == null) {
+        full = amount;
+      } else {
+        full = amount + data["monthly"][month];
+      }
       transactioncollection.add(newTransaction).then((value) => {
-            usercollection.doc(id).update({"transaction.$date": value.id})
+            usercollection.doc(id).update({"transaction.$date": value.id}),
+            if (data["monthly"][month] == null)
+              {
+                print("int if monthly"),
+                usercollection.doc(id).update({"monthly.$month": full})
+              }
+            else
+              {
+                print("In add montly else"),
+                print(data["monthly"][month] + amount),
+                usercollection.doc(id).update({"monthly.$month": full})
+              }
           });
     } else {
       print("In else");
@@ -65,22 +85,39 @@ class Services {
       transactioncollection
           .doc(getdocid)
           .update({"Total": transactiondata["Total"] + amount});
+      double full = 0;
+      if (data["monthly"][month] == null) {
+        full = amount;
+      } else {
+        full = amount + data["monthly"][month];
+      }
+              if (data["monthly"][month] == null)
+              {
+                print("int if monthly");
+                usercollection.doc(id).update({"monthly.$month": full});
+              }
+            else
+              {
+                print("In add montly else");
+                print(data["monthly"][month] + amount);
+                usercollection.doc(id).update({"monthly.$month": full});
+              }
     }
     return true;
   }
 
   Future<DocumentSnapshot> getTransaction(String date) async {
-        String id = _auth.currentUser!.uid;
-      var data = await usercollection.doc(id).get();
-      print("Date in getTransaction");
-      print(date);
-      var map;
-       if (data["transaction"].containsKey(date)) {
-          var id_doc = data["transaction"][date];
-          var map = await transactioncollection.doc(id_doc).get();
-          print(map["Total"]);
-          return map;
-       }
+    String id = _auth.currentUser!.uid;
+    var data = await usercollection.doc(id).get();
+    print("Date in getTransaction");
+    print(date);
+    var map;
+    if (data["transaction"].containsKey(date)) {
+      var id_doc = data["transaction"][date];
+      var map = await transactioncollection.doc(id_doc).get();
+      print(map["Total"]);
+      return map;
+    }
     return map;
   }
 }

@@ -169,4 +169,21 @@ class Services {
       return false;
     }
   }
+
+  Future<List<dynamic>> get_yearly() async{
+    List ans = await [];
+    String id = _auth.currentUser!.uid;
+    for(int i = 1;i<=12;i++)
+    {
+        String month = '${DateTime.now().year}-${i}';
+        var data = await usercollection.doc(id).get();
+        if(data['monthly'][month] == null)
+          ans.add(0);
+
+        else
+          ans.add(data["monthly"][month]);
+    }
+
+    return ans;
+  }
 }

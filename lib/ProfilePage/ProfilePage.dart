@@ -13,6 +13,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String monthlyexpense = '';
   String name = '';
   Services services = new Services();
+  List ans = [];
 
   void initState() {
     super.initState();
@@ -23,7 +24,6 @@ class _ProfilePageState extends State<ProfilePage> {
     String n = await services.get_name();
     double me = await services.getMonthly();
     print(n);
-    print(me);
     setState(() {
       name = n;
       monthlyexpense = me.toString();
@@ -61,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
+          const SizedBox(height: 20),
           Container(
             color: Colors.black,
             padding: EdgeInsets.all(16),

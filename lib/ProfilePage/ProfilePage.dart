@@ -3,7 +3,8 @@ import '../HomeScreen/HomeScreen.dart';
 import '../Services/Services.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final Services services;
+  const ProfilePage({super.key,required this.services});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -12,7 +13,6 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String monthlyexpense = '';
   String name = '';
-  Services services = new Services();
   List ans = [];
 
   void initState() {
@@ -21,8 +21,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> fetchdetails() async {
-    String n = await services.get_name();
-    double me = await services.getMonthly();
+    String n = await widget.services.get_name();
+    double me = await widget.services.getMonthly();
     print(n);
     setState(() {
       name = n;
@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                  MaterialPageRoute(builder: (context) => HomeScreen(services: widget.services)),
                 );
               },
             ),
@@ -97,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                  MaterialPageRoute(builder: (context) => ProfilePage(services: widget.services)),
                 );
               },
             ),

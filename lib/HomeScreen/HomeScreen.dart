@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../AddTransaction/AddTransaction.dart';
 import '../ViewTransaction/ViewTransactions.dart';
-
+import '../Services/Services.dart';
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
+  final Services services;
+  const HomeScreen({super.key, required this.services});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 });
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ViewTransactions(selecteddate: finalDate)),
+                  MaterialPageRoute(builder: (context) => ViewTransactions(selecteddate: finalDate,services: widget.services)),
                 );
               },
             ))
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddTransaction()),
+              MaterialPageRoute(builder: (context) => AddTransaction(services: widget.services)),
             );
           },
           child: Icon(Icons.add, color: Colors.white),
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                    MaterialPageRoute(builder: (context) => ProfilePage(services: widget.services)),
                   );
                 },
               ),

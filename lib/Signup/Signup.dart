@@ -4,7 +4,8 @@ import '../HomeScreen/HomeScreen.dart';
 import '../Services/Services.dart';
 
 class Signup extends StatefulWidget {
-  const Signup({super.key});
+  final Services services;
+  const Signup({super.key,required this.services});
 
   @override
   State<Signup> createState() => _SignupState();
@@ -12,7 +13,6 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   @override
-  Services services = new Services();
   TextEditingController namecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -60,13 +60,13 @@ class _SignupState extends State<Signup> {
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
-                    services.SignUp(namecontroller.text, emailcontroller.text,
+                    widget.services.SignUp(namecontroller.text, emailcontroller.text,
                             passwordcontroller.text)
                         .then((value) => {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
+                                    builder: (context) => HomeScreen(services: widget.services)),
                               )
                             });
                   },

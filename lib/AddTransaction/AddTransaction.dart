@@ -2,7 +2,8 @@ import 'package:expensetracker/HomeScreen/HomeScreen.dart';
 import 'package:flutter/material.dart';
 import '../Services/Services.dart';
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  final Services services;
+  const AddTransaction({super.key,required this.services});
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -14,7 +15,6 @@ class _AddTransactionState extends State<AddTransaction> {
   TextEditingController amountController = new TextEditingController();
   String selectedDate = '';
   String selectedMonth = '';
-  Services services = new Services();
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -25,11 +25,6 @@ class _AddTransactionState extends State<AddTransaction> {
 
     if (picked != null && picked != selectedDate) {
       String temp = "";
-      // temp = picked.day.toString() +
-      //     '-' +
-      //     picked.month.toString() +
-      //     '-' +
-      //     picked.year.toString();
       setState(() {
         selectedDate = '${picked.day}-${picked.month}-${picked.year}';
         selectedMonth = '${picked.year}-${picked.month}';
@@ -272,10 +267,10 @@ class _AddTransactionState extends State<AddTransaction> {
                 height: 50,
                 child: ElevatedButton(
                     onPressed: () {
-                      services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text),selectedMonth);
+                      widget.services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text),selectedMonth);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(builder: (context) => HomeScreen(services: widget.services)),
                       );
                     },
                     style: ElevatedButton.styleFrom(

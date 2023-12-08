@@ -4,7 +4,8 @@ import '../Services/Services.dart';
 
 class ViewTransactions extends StatefulWidget {
   final String selecteddate;
-  const ViewTransactions({super.key, required this.selecteddate});
+  final Services services;
+  const ViewTransactions({super.key, required this.selecteddate,required this.services});
 
   @override
   State<ViewTransactions> createState() => _ViewTransactionsState();
@@ -12,7 +13,7 @@ class ViewTransactions extends StatefulWidget {
 
 class _ViewTransactionsState extends State<ViewTransactions> {
   @override
-  Services services = new Services();
+
   String total = '0';
   String debt = '0';
   String housing = '0';
@@ -25,7 +26,7 @@ class _ViewTransactionsState extends State<ViewTransactions> {
     fetchTransactions();
   }
     Future<void> fetchTransactions() async {
-    DocumentSnapshot ans = await services.getTransaction(widget.selecteddate);
+    DocumentSnapshot ans = await widget.services.getTransaction(widget.selecteddate);
     print("Intransaction");
     print(ans["Total"]);
     setState(() {

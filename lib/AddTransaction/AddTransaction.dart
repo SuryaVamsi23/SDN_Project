@@ -70,15 +70,13 @@ class _AddTransactionState extends State<AddTransaction> {
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius as needed
+                                      10.0), 
                                 ),
                               ),
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    // Icon(Icons.travel_explore,
-                                    //     color: Colors.black),
                                     Image.asset("assets/airplane.png"),
                                     Text(
                                       'Travel',
@@ -100,7 +98,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius as needed
+                                      10.0), 
                                 ),
                               ),
                               child: Column(
@@ -128,7 +126,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius as needed
+                                      10.0), 
                                 ),
                               ),
                               child: Column(
@@ -156,7 +154,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 backgroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      10.0), // Adjust the radius as needed
+                                      10.0), 
                                 ),
                               ),
                               child: Column(
@@ -239,11 +237,11 @@ class _AddTransactionState extends State<AddTransaction> {
                       onPressed: () => _selectDate(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 167, 210,
-                            245), // Set the background color to black
+                            245), 
                         foregroundColor: Colors
-                            .black, // Set the text and icon color to white
+                            .black, 
                         minimumSize:
-                            Size(200, 48), // Set the minimum size of the button
+                            Size(200, 48), 
                       ),
                       child: Text('Select Date')),
                 ),

@@ -1,0 +1,8 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<resources>
+    <string name="facebook_app_id">1742518856261225</string>
+    <string name="fb_login_protocol_scheme">fb1742518856261225</string>
+    <string name="facebook_client_token">c14c1d8e6e22cf105d7f41089a9b29b0</string>
+    <string name="app_name">"Trackex"</string>
+
+</resources>

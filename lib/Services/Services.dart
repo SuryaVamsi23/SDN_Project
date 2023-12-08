@@ -2,6 +2,7 @@ import 'dart:ffi';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class Services {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -152,20 +153,59 @@ class Services {
       final AuthCredential creds = await GoogleAuthProvider.credential(accessToken: googleauth.accessToken,idToken: googleauth.idToken);
       UserCredential auth = await _auth.signInWithCredential(creds);
       DocumentSnapshot userDoc = await usercollection.doc(auth.user?.uid).get();
-      String gmail = user!.email ?? "";
-      String username = user.displayName ?? "";
+      String email = user!.email ?? "";
+      String name = user.displayName ?? "";
       if (userDoc.exists) {
         print('User Already Exist : Updating Only Gmail');
         await usercollection.doc(auth.user?.uid).update({
-          'google': gmail,
+          'google': email,
         });
       } else {
-        await usercollection.doc(auth.user?.uid).set({"name": username, "transaction": {}, "monthly": {}});
+        await usercollection.doc(auth.user?.uid).set({"name": name, 'google':email ,"transaction": {}, "monthly": {}});
       }
       return true;
 
     }catch(e){
       print(e);
+      return false;
+    }
+  }
+
+  Future<bool> oauth_facebook() async {
+ try {
+      print("called facebook auth");
+      await FacebookAuth.instance.logOut();
+      final LoginResult result = await FacebookAuth.instance.login();
+
+      if (result.status == LoginStatus.success) {
+        final AuthCredential creds = FacebookAuthProvider.credential(result.accessToken!.token);
+        UserCredential auth = await _auth.signInWithCredential(creds);
+        DocumentSnapshot userDoc = await usercollection.doc(auth.user?.uid).get();
+        String name = userDoc.exists ? userDoc["name"] : "";
+        if (userDoc.exists) {
+          print('User Already Exist: Updating Only Facebook');
+          await usercollection.doc(auth.user?.uid).update({
+            'facebook': true, 
+          });
+        } else {
+          await usercollection.doc(auth.user?.uid).set({
+            "name": name,
+            'facebook': true,
+            "transaction": {},
+            "monthly": {},
+          });
+        }
+
+        return true;
+      } else if (result.status == LoginStatus.cancelled) {
+        print("Facebook login cancelled");
+        return false;
+      } else {
+        print("Facebook login failed: ${result.message}");
+        return false;
+      }
+    } catch (e) {
+      print("Facebook login error: $e");
       return false;
     }
   }

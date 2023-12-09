@@ -51,11 +51,26 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: () {
                     services.SignIn(
                             emailcontroller.text, passwordcontroller.text)
-                        .then((value) => Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(services: services)),
-                            ));
+                        .then((value) {
+                          print('In signin');
+                        print(value);
+                      if (value == 'true') {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomeScreen(services: services,loginvia: 'Logged in via Email and Password',)),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Login failed. Please check your credentials.'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 167, 210,
@@ -77,7 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Signup(services: this.services)),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Signup(services: this.services)),
                         );
                       },
                       child: Text(
@@ -102,30 +119,27 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     IconButton(
                         onPressed: () async {
-                         bool flag = await services.oauth_google();
-                        if(flag)
-                        {
+                          bool flag = await services.oauth_google();
+                          if (flag) {
                             Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(services: services))
-                            );
-                        }
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeScreen(services: services,loginvia: 'Logged in via Google')));
+                          }
                         },
                         icon: Image.asset("assets/google.png",
                             height: 60, width: 60)),
                     IconButton(
-                        onPressed: () async{
-                       bool flag = await services.oauth_facebook();
-                        if(flag)
-                        {
+                        onPressed: () async {
+                          bool flag = await services.oauth_facebook();
+                          if (flag) {
                             Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen(services: services))
-                            );
-                        }
-
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        HomeScreen(services: services,loginvia: 'Logged in via Facebook',)));
+                          }
                         },
                         icon: Image.asset("assets/facebook.png",
                             height: 40, width: 40))

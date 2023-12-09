@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class Services {
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -13,27 +15,35 @@ class Services {
       FirebaseFirestore.instance.collection('transactions');
 
   Future<String> SignUp(String name, String email, String Password) async {
-    await _auth.createUserWithEmailAndPassword(
-        email: email, password: Password);
-    FirebaseUser = FirebaseAuth.instance.currentUser;
-    String id = FirebaseUser.uid;
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: Password);
+      FirebaseUser = FirebaseAuth.instance.currentUser;
+      String id = FirebaseUser.uid;
 
-    await usercollection
-        .doc(id)
-        .set({"name": name, "transaction": {}, "monthly": {}});
-    return id;
+      await usercollection
+          .doc(id)
+          .set({"name": name, "transaction": {}, "monthly": {}});
+      return 'true';
+    } catch (e) {
+      return 'false';
+    }
   }
 
   Future<String> SignIn(String email, String Password) async {
     print("Signin with email password");
     print(email);
     print(Password);
-    UserCredential user = await _auth.signInWithEmailAndPassword(
-        email: email, password: Password);
-    FirebaseUser = FirebaseAuth.instance.currentUser;
-    String id = FirebaseUser.uid;
-    print(id);
-    return id;
+    try {
+      UserCredential user = await _auth.signInWithEmailAndPassword(
+          email: email, password: Password);
+      FirebaseUser = FirebaseAuth.instance.currentUser;
+      String id = FirebaseUser.uid;
+      print(id);
+      return 'true';
+    } catch (e) {
+      return 'false';
+    }
   }
 
   Future<bool> AddTransaction(
@@ -94,17 +104,14 @@ class Services {
       } else {
         full = amount + data["monthly"][month];
       }
-              if (data["monthly"][month] == null)
-              {
-                print("int if monthly");
-                usercollection.doc(id).update({"monthly.$month": full});
-              }
-            else
-              {
-                print("In add montly else");
-                print(data["monthly"][month] + amount);
-                usercollection.doc(id).update({"monthly.$month": full});
-              }
+      if (data["monthly"][month] == null) {
+        print("int if monthly");
+        usercollection.doc(id).update({"monthly.$month": full});
+      } else {
+        print("In add montly else");
+        print(data["monthly"][month] + amount);
+        usercollection.doc(id).update({"monthly.$month": full});
+      }
     }
     return true;
   }
@@ -124,33 +131,33 @@ class Services {
     return map;
   }
 
-  Future<double> getMonthly() async{
+  Future<double> getMonthly() async {
     String id = _auth.currentUser!.uid;
     double ans = 0;
     String month = '${DateTime.now().year}-${DateTime.now().month}';
     var data = await usercollection.doc(id).get();
-    if(data['monthly'][month] == null)
-        ans = 0;
-
+    if (data['monthly'][month] == null)
+      ans = 0;
     else
       ans = data["monthly"][month];
     return ans;
   }
 
-  Future<String> get_name() async{
+  Future<String> get_name() async {
     String id = _auth.currentUser!.uid;
     var data = await usercollection.doc(id).get();
-    return(data["name"]);
+    return (data["name"]);
   }
 
-  Future<bool> oauth_google() async{
-    try{
+  Future<bool> oauth_google() async {
+    try {
       await GoogleSignIn().signOut();
-      final GoogleSignInAccount? user = await GoogleSignIn(forceCodeForRefreshToken: true).signIn();
-      if(user == null)
-        return false;
+      final GoogleSignInAccount? user =
+          await GoogleSignIn(forceCodeForRefreshToken: true).signIn();
+      if (user == null) return false;
       final GoogleSignInAuthentication googleauth = await user.authentication;
-      final AuthCredential creds = await GoogleAuthProvider.credential(accessToken: googleauth.accessToken,idToken: googleauth.idToken);
+      final AuthCredential creds = await GoogleAuthProvider.credential(
+          accessToken: googleauth.accessToken, idToken: googleauth.idToken);
       UserCredential auth = await _auth.signInWithCredential(creds);
       DocumentSnapshot userDoc = await usercollection.doc(auth.user?.uid).get();
       String email = user!.email ?? "";
@@ -161,36 +168,46 @@ class Services {
           'google': email,
         });
       } else {
-        await usercollection.doc(auth.user?.uid).set({"name": name, 'google':email ,"transaction": {}, "monthly": {}});
+        await usercollection.doc(auth.user?.uid).set(
+            {"name": name, 'google': email, "transaction": {}, "monthly": {}});
       }
       return true;
-
-    }catch(e){
+    } catch (e) {
       print(e);
       return false;
     }
   }
 
   Future<bool> oauth_facebook() async {
- try {
+    try {
       print("called facebook auth");
       await FacebookAuth.instance.logOut();
       final LoginResult result = await FacebookAuth.instance.login();
 
       if (result.status == LoginStatus.success) {
-        final AuthCredential creds = FacebookAuthProvider.credential(result.accessToken!.token);
+        final AccessToken accessToken = result.accessToken!;
+        final graphResponse = await http.get(
+          Uri.parse('https://graph.facebook.com/v14.0/me?fields=id,name,email'),
+          headers: {'Authorization': 'Bearer ${accessToken.token}'},
+        );
+        final Map<String, dynamic> userData = json.decode(graphResponse.body);
+        String facebookName = userData['name'] ?? '';
+        String facebookEmail = userData['email'] ?? '';
+        final AuthCredential creds =
+            FacebookAuthProvider.credential(result.accessToken!.token);
         UserCredential auth = await _auth.signInWithCredential(creds);
-        DocumentSnapshot userDoc = await usercollection.doc(auth.user?.uid).get();
-        String name = userDoc.exists ? userDoc["name"] : "";
+        DocumentSnapshot userDoc =
+            await usercollection.doc(auth.user?.uid).get();
+
         if (userDoc.exists) {
           print('User Already Exist: Updating Only Facebook');
           await usercollection.doc(auth.user?.uid).update({
-            'facebook': true, 
+            'facebook': facebookEmail,
           });
         } else {
           await usercollection.doc(auth.user?.uid).set({
-            "name": name,
-            'facebook': true,
+            "name": facebookName,
+            'facebook': facebookEmail,
             "transaction": {},
             "monthly": {},
           });
@@ -210,20 +227,66 @@ class Services {
     }
   }
 
-  Future<List<dynamic>> get_yearly() async{
+  Future<List<dynamic>> get_yearly() async {
     List ans = await [];
     String id = _auth.currentUser!.uid;
-    for(int i = 1;i<=12;i++)
-    {
-        String month = '${DateTime.now().year}-${i}';
-        var data = await usercollection.doc(id).get();
-        if(data['monthly'][month] == null)
-          ans.add(0);
-
-        else
-          ans.add(data["monthly"][month]);
+    for (int i = 1; i <= 12; i++) {
+      String month = '${DateTime.now().year}-${i}';
+      var data = await usercollection.doc(id).get();
+      if (data['monthly'][month] == null)
+        ans.add(0);
+      else
+        ans.add(data["monthly"][month]);
     }
-
     return ans;
+  }
+
+  Future<void> logout() async {
+    await _auth.signOut();
+  }
+
+  Future<String> linkAccountWithGoogle() async {
+    try {
+      await GoogleSignIn().signOut();
+      GoogleSignInAccount? googleSignInAccount =
+          await GoogleSignIn(forceCodeForRefreshToken: true).signIn();
+      GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount!.authentication;
+      AuthCredential googleCredential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      print("Fetched Credentiatls");
+
+      User? user = _auth.currentUser;
+      try{
+              await user?.linkWithCredential(googleCredential);
+
+      await usercollection.doc(user?.uid).update({
+        'google': googleSignInAccount.email,
+      });
+         print('Account linked with Google successfully!');
+
+         return 'true';
+      }catch(e){
+        return 'already';
+      }
+
+    } catch (e) {
+      print('Error linking account with Google: $e');
+      return 'false';
+    }
+  }
+
+  Future<String> getprovider() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    String login = '';
+    if (user != null) {
+      if (user.providerData.isNotEmpty) {
+        login = user.providerData.first.providerId;
+      }
+    }
+    return login;
   }
 }

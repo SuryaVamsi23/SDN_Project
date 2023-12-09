@@ -5,7 +5,7 @@ import '../Services/Services.dart';
 
 class Signup extends StatefulWidget {
   final Services services;
-  const Signup({super.key,required this.services});
+  const Signup({super.key, required this.services});
 
   @override
   State<Signup> createState() => _SignupState();
@@ -60,15 +60,28 @@ class _SignupState extends State<Signup> {
               height: 50,
               child: ElevatedButton(
                   onPressed: () {
-                    widget.services.SignUp(namecontroller.text, emailcontroller.text,
+                    widget.services
+                        .SignUp(namecontroller.text, emailcontroller.text,
                             passwordcontroller.text)
-                        .then((value) => {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomeScreen(services: widget.services)),
-                              )
-                            });
+                        .then((value) {
+                      if (value == 'true') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  HomeScreen(services: widget.services,loginvia: 'Logged in via Email and Password')),
+                        );
+                      } else {
+                        // Show SnackBar if sign-up is not successful
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Sign-up failed. Please check your information.'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                    });
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 167, 210,

@@ -6,7 +6,8 @@ import '../ViewTransaction/ViewTransactions.dart';
 import '../Services/Services.dart';
 class HomeScreen extends StatefulWidget {
   final Services services;
-  const HomeScreen({super.key, required this.services});
+  final String loginvia;
+  const HomeScreen({super.key, required this.services,required this.loginvia});
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -15,6 +16,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   String finalDate = '';
   DateTime _selectedDay = DateTime.now();
+  void initState()
+  {
+      print(widget.loginvia);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -47,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddTransaction(services: widget.services)),
+              MaterialPageRoute(builder: (context) => AddTransaction(services: widget.services,loginvia: widget.loginvia)),
             );
           },
           child: Icon(Icons.add, color: Colors.white),
@@ -73,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfilePage(services: widget.services)),
+                    MaterialPageRoute(builder: (context) => ProfilePage(services: widget.services,loginvia: widget.loginvia)),
                   );
                 },
               ),

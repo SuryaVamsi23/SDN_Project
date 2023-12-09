@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import '../Services/Services.dart';
 class AddTransaction extends StatefulWidget {
   final Services services;
-  const AddTransaction({super.key,required this.services});
+  final String loginvia;
+  const AddTransaction({super.key,required this.services,required this.loginvia});
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -268,7 +269,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       widget.services.AddTransaction(selectedCat, selectedDate, double.parse(amountController.text),selectedMonth);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen(services: widget.services)),
+                        MaterialPageRoute(builder: (context) => HomeScreen(services: widget.services,loginvia: widget.loginvia)),
                       );
                     },
                     style: ElevatedButton.styleFrom(

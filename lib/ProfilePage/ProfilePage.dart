@@ -6,7 +6,8 @@ import '../Loginpage/LoginPage.dart';
 class ProfilePage extends StatefulWidget {
   final Services services;
   final String loginvia;
-  const ProfilePage({super.key, required this.services,required this.loginvia});
+  const ProfilePage(
+      {super.key, required this.services, required this.loginvia});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -51,6 +52,87 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
   }
+
+Future<void> _showLinkWithEmailDialog() async {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  await showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true, // Set to true to display above the keyboard
+    builder: (BuildContext context) {
+      return SingleChildScrollView(
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0),
+            topRight: Radius.circular(20.0),
+          ),
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            color: Colors.white, // Set the background color to white
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text('Link with Email',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                SizedBox(height: 16),
+                TextField(
+                  controller: emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                ),
+                SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(labelText: 'Password'),
+                ),
+                SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {
+                    widget.services
+                        .linkEmailAndPassword(
+                            emailController.text, passwordController.text)
+                        .then((value) 
+                        {
+                          if(value == 'true')
+                          {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Linking successful.'),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            };
+
+                            if (value == 'already') {
+                              Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('Account is already linked with Email'),
+                            duration: Duration(seconds: 3),
+                          ),
+                        );
+                      }
+                        }
+                      );
+                          
+                  },
+                  child: Text('Link'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,41 +187,88 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              _showLinkWithEmailDialog();
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 167, 210, 245),
+              foregroundColor: Colors.black,
+              minimumSize: Size(300, 48),
+            ),
+            child: Text('Link with Email'),
+          ),
+          const SizedBox(height: 20),
           Container(
             height: 50,
             child: ElevatedButton(
                 onPressed: () {
                   widget.services.linkAccountWithGoogle().then((value) {
                     if (value == 'true') {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Linking succesful.'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Linking succesful.'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
                     }
 
-                    if(value == 'already') {
-                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                                'Account is already linked with google'),
-                            duration: Duration(seconds: 3),
-                          ),
-                        );
+                    if (value == 'already') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Account is already linked with Google'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
                     }
                   });
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor:  const Color.fromARGB(255, 167, 210,
-                        245), // Set the background color to black
+                  backgroundColor: const Color.fromARGB(
+                      255, 167, 210, 245), 
                   foregroundColor:
-                      Colors.black, // Set the text and icon color to white
+                      Colors.black, 
                   minimumSize:
-                      Size(300, 48), // Set the minimum size of the button
+                      Size(300, 48),
                 ),
-                child: Text('Link with google')),
+                child: Text('Link with Google')),
+          ),
+          const SizedBox(height: 20),
+          Container(
+            height: 50,
+            child: ElevatedButton(
+                onPressed: () {
+                  widget.services.linkAccountWithFacebook().then((value) {
+                    if (value == 'true') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Linking succesful.'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    }
+
+                    if (value == 'already') {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Account is already linked with Facebook'),
+                          duration: Duration(seconds: 3),
+                        ),
+                      );
+                    }
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(
+                      255, 167, 210, 245), 
+                  foregroundColor:
+                      Colors.black, 
+                  minimumSize:
+                      Size(300, 48), 
+                ),
+                child: Text('Link with Facebook')),
           ),
           const SizedBox(height: 20),
           Container(
@@ -156,11 +285,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color.fromARGB(
-                      255, 248, 108, 108), // Set the background color to black
+                      255, 248, 108, 108), 
                   foregroundColor:
-                      Colors.black, // Set the text and icon color to white
+                      Colors.black, 
                   minimumSize:
-                      Size(300, 48), // Set the minimum size of the button
+                      Size(300, 48),
                 ),
                 child: Text('Logout')),
           ),
@@ -179,8 +308,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          HomeScreen(services: widget.services,loginvia: widget.loginvia,)),
+                      builder: (context) => HomeScreen(
+                            services: widget.services,
+                            loginvia: widget.loginvia,
+                          )),
                 );
               },
             ),
@@ -191,8 +322,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          ProfilePage(services: widget.services,loginvia: widget.loginvia)),
+                      builder: (context) => ProfilePage(
+                          services: widget.services,
+                          loginvia: widget.loginvia)),
                 );
               },
             ),

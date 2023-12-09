@@ -23,7 +23,7 @@ class Services {
 
       await usercollection
           .doc(id)
-          .set({"name": name, "transaction": {}, "monthly": {}});
+          .set({"name": name, "transaction": {}, "monthly": {},"email": email});
       return 'true';
     } catch (e) {
       return 'false';
@@ -215,14 +215,11 @@ class Services {
 
         return true;
       } else if (result.status == LoginStatus.cancelled) {
-        print("Facebook login cancelled");
         return false;
       } else {
-        print("Facebook login failed: ${result.message}");
         return false;
       }
     } catch (e) {
-      print("Facebook login error: $e");
       return false;
     }
   }
@@ -257,24 +254,78 @@ class Services {
         idToken: googleSignInAuthentication.idToken,
       );
 
-      print("Fetched Credentiatls");
-
       User? user = _auth.currentUser;
-      try{
-              await user?.linkWithCredential(googleCredential);
+      try {
+        await user?.linkWithCredential(googleCredential);
 
-      await usercollection.doc(user?.uid).update({
-        'google': googleSignInAccount.email,
-      });
-         print('Account linked with Google successfully!');
+        await usercollection.doc(user?.uid).update({
+          'google': googleSignInAccount.email,
+        });
 
-         return 'true';
-      }catch(e){
+        return 'true';
+      } catch (e) {
         return 'already';
       }
-
     } catch (e) {
-      print('Error linking account with Google: $e');
+      return 'false';
+    }
+  }
+
+  Future<String> linkAccountWithFacebook() async {
+    try {
+      await FacebookAuth.instance.logOut();
+      final LoginResult result = await FacebookAuth.instance.login();
+      if (result.status == LoginStatus.cancelled) {
+        return 'false';
+      }
+
+      final AccessToken accessToken = result.accessToken!;
+      final AuthCredential facebookCredential =
+          FacebookAuthProvider.credential(accessToken.token);
+
+      User? user = _auth.currentUser;
+      try {
+        try {
+          await user?.linkWithCredential(facebookCredential);
+          final graphResponse = await http.get(
+            Uri.parse(
+                'https://graph.facebook.com/v14.0/me?fields=id,name,email'),
+            headers: {'Authorization': 'Bearer ${accessToken.token}'},
+          );
+          final Map<String, dynamic> facebookUserData =
+              json.decode(graphResponse.body);
+          String facebookEmail = facebookUserData['email'] ?? '';
+
+          await usercollection.doc(user?.uid).update({
+            'facebook': facebookEmail,
+          });
+
+          return 'true';
+        } catch (e) {
+          return 'already';
+        }
+      } catch (e) {
+        return 'false';
+      }
+    } catch (e) {
+      return 'false';
+    }
+  }
+
+  Future<String> linkEmailAndPassword(String email, String password) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+      AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password);
+
+      try {
+        await user!.linkWithCredential(credential);
+
+        return 'true';
+      } catch (e) {
+        return 'already';
+      }
+    } catch (e) {
       return 'false';
     }
   }

@@ -320,7 +320,9 @@ class Services {
 
       try {
         await user!.linkWithCredential(credential);
-
+          await usercollection.doc(user?.uid).update({
+            'email': email,
+          });
         return 'true';
       } catch (e) {
         return 'already';

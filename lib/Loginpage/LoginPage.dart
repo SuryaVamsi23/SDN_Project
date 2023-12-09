@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
         appBar: AppBar(
             title: Text('TRACKEXP',
-                style: TextStyle(fontWeight: FontWeight.bold))),
+                style: TextStyle(fontWeight: FontWeight.bold)),automaticallyImplyLeading: false,),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

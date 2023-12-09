@@ -100,9 +100,7 @@ flutter build apk
 ### USB Debugging:
 - Connect your phone to USB and enable developer options for testing on a physical device.
 
-## Result/Observation
 
-*(Results and observations to be added after project completion)*
 
 ## References
 
